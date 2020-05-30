@@ -16,7 +16,7 @@ Use the adonis command to install the blueprint
 adonis new yardstick --blueprint=inovando/adonis-api-app
 ```
 
-or manually clone the repo and then run `npm install`.
+or manually clone the repo and then run `yarn install`.
 
 
 ### Migrations
