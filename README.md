@@ -26,3 +26,14 @@ Run the following command to run startup migrations.
 ```js
 adonis migration:run
 ```
+
+### Roadmap
+
+- [ ] Abstração Controller/Repository
+- [ ] [Bumblebee (include)](https://github.com/rhwilr/adonis-bumblebee)
+- [ ] Enviar e-mails
+- [ ] Método para autenticar, resetar senha
+- [ ] Endpoints `/me`
+- [ ] Abstração de profiles
+- [ ] Upload de arquivos genérico
+- [ ] Sentry
