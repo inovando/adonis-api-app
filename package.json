@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
-    "dev": "adonis serve --dev"
+    "dev": "adonis serve --dev",
+    "lint": "eslint --fix ."
   },
   "keywords": [
     "adonisjs",
@@ -31,7 +32,13 @@
     "adonis-bumblebee": "^2.2.0",
     "pg": "^8.2.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5"
+  },
   "autoload": {
     "App": "./app"
   }

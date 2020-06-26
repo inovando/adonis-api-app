@@ -1,11 +1,9 @@
-const BumblebeeTransformer = use("Bumblebee/Transformer");
+const BumblebeeTransformer = use('Bumblebee/Transformer');
 
 class BaseTransformer extends BumblebeeTransformer {
   transform(model) {
-    return model
+    return model;
   }
-
 }
-
 
 module.exports = BaseTransformer;

@@ -1,15 +1,15 @@
-'use strict'
-const repository = use('App/Repositories/FileRepository')
+'use strict';
+const repository = use('App/Repositories/FileRepository');
 
 class FileController extends use('/BaseController') {
   constructor() {
-    super(repository)
-    this.respository = repository
+    super(repository);
+    this.respository = repository;
   }
 
   async show(ctx) {
-    return await repository.download(ctx)
+    return await repository.download(ctx);
   }
 }
 
-module.exports = FileController
+module.exports = FileController;

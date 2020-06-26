@@ -1,9 +1,9 @@
-'use strict'
-const BaseExceptionHandler = use('BaseExceptionHandler')
-//const sentry = use('Sentry')
-const Logger = use('Logger')
-const Env = use('Env')
-const Youch = use('youch')
+'use strict';
+const BaseExceptionHandler = use('BaseExceptionHandler');
+const sentry = use('Sentry');
+const Logger = use('Logger');
+const Env = use('Env');
+const Youch = use('youch');
 
 /**
  * This class handles all exceptions thrown during
@@ -25,31 +25,31 @@ class ExceptionHandler extends BaseExceptionHandler {
    */
   async handle(error, { request, response, auth }) {
     if (error.name === 'ValidationException') {
-      return response.status(error.status).send(error.message)
+      return response.status(error.status).send(error.message);
     }
 
     if (error.name === 'InvalidJwtToken') {
-      const msg = 'Token Invalido ou não informado.'
-      this.logErro(msg, auth)
-      return response.status(error.status).send({ msg })
+      const msg = 'Token Invalido ou não informado.';
+      this.logErro(msg, auth);
+      return response.status(error.status).send({ msg });
     }
 
     if (Env.get('NODE_ENV') === 'development') {
-      const youch = new Youch(error, request.request)
-      const errorJson = await youch.toJSON()
+      const youch = new Youch(error, request.request);
+      const errorJson = await youch.toJSON();
 
-      this.logErro(errorJson, auth)
-      return response.status(error.status).send(errorJson)
+      this.logErro(errorJson, auth);
+      return response.status(error.status).send(errorJson);
     }
 
-    this.logErro(error, auth)
-    return response.status(error.status).send('server error')
+    this.logErro(error, auth);
+    return response.status(error.status).send('server error');
   }
 
   async logErro(error, auth) {
-    const user = (auth.user) ? auth.user : {}
-    const logErrro = JSON.stringify(error)
-    Logger.error({ user, msg: `Exceção capturada: ${logErrro}` })
+    const user = auth.user ? auth.user : {};
+    const logErrro = JSON.stringify(error);
+    Logger.error({ user, msg: `Exceção capturada: ${logErrro}` });
   }
 
   /**
@@ -62,10 +62,9 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async report(error, { auth }) {
-
-    // sentry.captureException(error)
+  async report(error) {
+    sentry.captureException(error);
   }
 }
 
-module.exports = ExceptionHandler
+module.exports = ExceptionHandler;
