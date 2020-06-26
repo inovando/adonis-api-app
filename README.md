@@ -1,12 +1,7 @@
 # Adonis API application
+> 🔺 Inovando's template for adonis
 
-This is the boilerplate for creating an API server in AdonisJs, it comes pre-configured with.
-
-1. Bodyparser
-2. Authentication
-3. CORS
-4. Lucid ORM
-5. Migrations and seeds
+![Package Main Techs](docs/techs.png)
 
 ## Usage
 
@@ -73,8 +68,13 @@ adonis migration:refresh --seed
 ![Postman Environment | Second Step](docs/postman-environment-2.png)
 ![Postman Environment | Second Step](docs/postman-environment-3.png)
 
-### Roadmap
+### Features
 
+- [x] Bodyparser
+- [x] Authentication
+- [x] CORS
+- [x] Lucid ORM
+- [x] Migrations and seeds
 - [x] Abstração Controller/Repository
 - [x] [Bumblebee (include)](https://github.com/rhwilr/adonis-bumblebee)
 - [x] Enviar e-mails
