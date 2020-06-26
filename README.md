@@ -8,16 +8,23 @@ This is the boilerplate for creating an API server in AdonisJs, it comes pre-con
 4. Lucid ORM
 5. Migrations and seeds
 
-## Setup
+## Usage
 
-Use the adonis command to install the blueprint
+1. Initialize your project with this command:
 
 ```bash
 adonis new yardstick --blueprint=inovando/adonis-api-app
 ```
 
-or manually clone the repo and then run `yarn install`.
+2. Modify `.env` fulfilling variables as needed
 
+3. Run the following command:
+
+```bash
+adonis serve --dev
+```
+
+4. Done 🎉
 
 ### Migrations
 
