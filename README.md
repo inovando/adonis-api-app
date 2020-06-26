@@ -8,16 +8,38 @@ This is the boilerplate for creating an API server in AdonisJs, it comes pre-con
 4. Lucid ORM
 5. Migrations and seeds
 
-## Setup
+## Usage
 
-Use the adonis command to install the blueprint
+1. Setup a [Postgis Database](#postgis)
+
+2. Initialize your project with this command:
 
 ```bash
 adonis new yardstick --blueprint=inovando/adonis-api-app
 ```
 
-or manually clone the repo and then run `yarn install`.
+3. Modify `.env` fulfilling variables as needed
 
+4. Run the following command:
+
+```bash
+adonis serve --dev
+```
+
+5. Done 🎉
+
+### Postgis
+
+#### Local install
+
+[Follow this link](https://postgis.net/install/)
+
+#### Docker
+
+```bash
+docker run --name database -e POSTGRES_PASSWORD=some-password -p 5432:5432 -d postgis/postgis
+docker start database
+```
 
 ### Migrations
 
