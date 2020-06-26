@@ -16,6 +16,7 @@ This is the boilerplate for creating an API server in AdonisJs, it comes pre-con
 
 ```bash
 adonis new yardstick --blueprint=inovando/adonis-api-app
+adonis migration:refresh --seed
 ```
 
 3. Modify `.env` fulfilling variables as needed
