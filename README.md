@@ -27,6 +27,14 @@ Run the following command to run startup migrations.
 adonis migration:run
 ```
 
+### Seeds
+
+Run the following command to run recreate the database and seed.
+
+```js
+adonis migration:refresh --seed
+```
+
 ### Roadmap
 
 - [x] Abstração Controller/Repository
