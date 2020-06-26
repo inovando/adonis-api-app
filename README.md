@@ -10,21 +10,36 @@ This is the boilerplate for creating an API server in AdonisJs, it comes pre-con
 
 ## Usage
 
-1. Initialize your project with this command:
+1. Setup a [Postgis Database](#postgis)
+
+2. Initialize your project with this command:
 
 ```bash
 adonis new yardstick --blueprint=inovando/adonis-api-app
 ```
 
-2. Modify `.env` fulfilling variables as needed
+3. Modify `.env` fulfilling variables as needed
 
-3. Run the following command:
+4. Run the following command:
 
 ```bash
 adonis serve --dev
 ```
 
-4. Done 🎉
+5. Done 🎉
+
+### Postgis
+
+#### Local install
+
+[Follow this link](https://postgis.net/install/)
+
+#### Docker
+
+```bash
+docker run --name database -e POSTGRES_PASSWORD=some-password -p 5432:5432 -d postgis/postgis
+docker start database
+```
 
 ### Migrations
 
