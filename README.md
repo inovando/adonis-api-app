@@ -58,6 +58,21 @@ Run the following command to run recreate the database and seed.
 adonis migration:refresh --seed
 ```
 
+### Postman
+
+1. Download [Postman](https://www.postman.com/downloads/)
+
+3. Import our [Postman Collection](https://learning.postman.com/docs/postman/collections/intro-to-collections/) from `postman/Template Adonis.postman_collection.json`
+
+![Postman Collection | First Step](docs/postman-collection-1.png)
+![Postman Collection | Second Step](docs/postman-collection-2.png)
+
+4. Import our [Postman Environment](https://learning.postman.com/docs/postman/variables-and-environments/managing-environments/) from `postman/Template Adonis.postman_environment.json`
+
+![Postman Environment | First Step](docs/postman-environment-1.png)
+![Postman Environment | Second Step](docs/postman-environment-2.png)
+![Postman Environment | Second Step](docs/postman-environment-3.png)
+
 ### Roadmap
 
 - [x] Abstração Controller/Repository
