@@ -16,6 +16,44 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
+const { sendTestEmail } = require('../app/Services/SendGrid/SendGrid')
+
+
+Route.group(() => {
+  Route.post("/register", "AuthController.register").validator("Register");
+  Route.post("/login", "AuthController.login");
+  Route.get("/me", "AuthController.session").middleware(["auth"]);
+}).prefix("/auth");
+
+
+Route.resource("file", "FileController")
+  .middleware(
+    new Map([
+      [
+        ["destroy", "store", "index", "show"],
+        ["auth"],
+      ],
+    ])
+  )
+  .apiOnly();
+
+
+Route.resource("user", "UserController")
+  .middleware(
+    new Map([
+      [
+        ["destroy", "store", "index", "show"],
+        ["auth"],
+      ],
+    ])
+  )
+  .apiOnly();
+
+
+Route.get('/sendmail', async ({ response }) => {
+  try {
+    return await sendTestEmail()
+  } catch (error) {
+    return response.status(500).json(error)
+  }
 })

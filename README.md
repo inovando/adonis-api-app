@@ -29,11 +29,14 @@ adonis migration:run
 
 ### Roadmap
 
-- [ ] Abstração Controller/Repository
-- [ ] [Bumblebee (include)](https://github.com/rhwilr/adonis-bumblebee)
-- [ ] Enviar e-mails
-- [ ] Método para autenticar, resetar senha
-- [ ] Endpoints `/me`
-- [ ] Abstração de profiles
-- [ ] Upload de arquivos genérico
-- [ ] Sentry
+- [x] Abstração Controller/Repository
+- [x] [Bumblebee (include)](https://github.com/rhwilr/adonis-bumblebee)
+- [x] Enviar e-mails
+- [x] Método para autenticar, resetar senha
+- [x] Endpoints `/me`
+- [x] Abstração de profiles
+- [x] Upload de arquivos genérico
+- [x] Sentry
+- [x] Redis Cache
+- [x] User and Profile Seeder
+
