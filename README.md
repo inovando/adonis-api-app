@@ -1,6 +1,9 @@
 # Adonis API application
 > 🔺 Inovando's template for adonis
 
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 ![Package Main Techs](docs/techs.png)
 
 ## Usage
@@ -85,4 +88,5 @@ adonis migration:refresh --seed
 - [x] Sentry
 - [x] Redis Cache
 - [x] User and Profile Seeder
+- [x] Commitizen Friendly
 
