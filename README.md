@@ -8,7 +8,7 @@
 
 ## Usage
 
-1. Setup a [Postgis Database](#postgis)
+1. Setup a [PostgreSQL](#postgresql)
 
 2. Initialize your project with this command:
 
@@ -27,17 +27,18 @@ adonis serve --dev
 
 5. Done 🎉
 
-### Postgis
+### PostgreSQL
 
 #### Local install
 
-[Follow this link](https://postgis.net/install/)
+[Follow this link](https://www.postgresql.org/download/)
 
 #### Docker
 
 ```bash
-docker run --name database -e POSTGRES_PASSWORD=some-password -p 5432:5432 -d postgis/postgis
-docker start database
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+docker start postgres
 ```
 
 ### Migrations
