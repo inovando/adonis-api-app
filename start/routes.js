@@ -24,13 +24,9 @@ Route.group(() => {
   Route.get('/me', 'AuthController.session').middleware(['auth']);
 }).prefix('/auth');
 
-Route.resource('file', 'FileController')
-  .middleware(new Map([[['destroy', 'store', 'index', 'show'], ['auth']]]))
-  .apiOnly();
+Route.resource('file', 'FileController').middleware(['auth']).apiOnly();
 
-Route.resource('user', 'UserController')
-  .middleware(new Map([[['destroy', 'store', 'index', 'show'], ['auth']]]))
-  .apiOnly();
+Route.resource('user', 'UserController').middleware(['auth']).apiOnly();
 
 Route.get('/sendmail', async ({ response }) => {
   try {
