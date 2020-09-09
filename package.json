@@ -8,7 +8,8 @@
     "start": "node server.js",
     "test": "node ace test",
     "dev": "adonis serve --dev",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "generate:crud": "hygen crud with-prompt"
   },
   "keywords": [
     "adonisjs",
@@ -28,21 +29,39 @@
     "@adonisjs/lucid": "^6.1.3",
     "@adonisjs/redis": "^2.0.7",
     "@adonisjs/validator": "^5.0.6",
-    "@sendgrid/mail": "^7.2.1",
+    "@rocketseat/adonis-timezone": "^0.7.0",
+    "@sendgrid/mail": "^7.2.2",
     "adonis-bumblebee": "^2.2.0",
-    "pg": "^8.2.1"
+    "adonis-sentry": "^2.0.2",
+    "adonis-spreadsheet": "^1.0.1",
+    "commitlint": "^10.0.0",
+    "commitlint-plugin-cleanfeet": "^0.1.2",
+    "conventional-changelog-conventionalcommits": "^4.4.0",
+    "date-fns": "^2.16.1",
+    "html-pdf": "^2.2.0",
+    "js-brasil": "^2.1.0",
+    "moment": "^2.27.0",
+    "node-xlsx": "^0.15.0",
+    "numeral": "^2.0.6",
+    "pdfmake": "^0.1.68",
+    "pg": "^8.2.1",
+    "shortid": "^2.2.15",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^9.0.1",
+    "@commitlint/cli": "^10.0.0",
     "@commitlint/config-conventional": "^9.0.1",
+    "ansi-colors": "^4.1.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.3.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
+    "hygen": "^6.0.4",
+    "lint-staged": "^10.0.7",
     "prettier": "^2.0.5",
     "standard-version": "^8.0.0",
-    "lint-staged": "^10.0.7"
+    "yosay": "^2.0.2"
   },
   "autoload": {
     "App": "./app"
