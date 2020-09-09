@@ -33,6 +33,25 @@ hooks.after.providersBooted(() => {
     }
   };
 
+  const validateDuplicidade = async (data, field, message, args, get) => {
+    const value = get(data, field);
+    const [table, id] = args;
+
+    // console.log({ data, field, message, args, get, value, table, id });
+
+    if (!value) return;
+
+    const row = await Database.table(table)
+      .whereNot('id', id)
+      .andWhere(field, value)
+      .first();
+
+    if (row) {
+      throw message;
+    }
+  };
+
   Validator.extend('exists', existsFn);
   Validator.extend('uniqueField', uniqueField);
+  Validator.extend('validateDuplicidade', validateDuplicidade);
 });

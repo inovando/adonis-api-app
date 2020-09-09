@@ -19,6 +19,10 @@ const providers = [
   '@adonisjs/validator/providers/ValidatorProvider',
   'adonis-bumblebee/providers/BumblebeeProvider',
   '@adonisjs/redis/providers/RedisProvider',
+  '@adonisjs/framework/providers/ViewProvider',
+  'adonis-sentry/providers/Sentry',
+  'adonis-spreadsheet/providers/SpreadSheetProvider',
+  '@rocketseat/adonis-timezone/providers/TimezoneProvider',
 ];
 
 /*

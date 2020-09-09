@@ -1,5 +1,4 @@
 const BumblebeeTransformer = use('Bumblebee/Transformer');
-const moment = require('moment');
 
 class UserTransformer extends BumblebeeTransformer {
   static get availableInclude() {
@@ -12,7 +11,6 @@ class UserTransformer extends BumblebeeTransformer {
       username: model.username,
       email: model.email,
       created_at: model.created_at,
-      created_at_formated: moment(model.created_at).format('D/MM/Y'),
     };
   }
 

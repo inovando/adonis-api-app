@@ -40,7 +40,6 @@
     "date-fns": "^2.16.1",
     "html-pdf": "^2.2.0",
     "js-brasil": "^2.1.0",
-    "moment": "^2.27.0",
     "node-xlsx": "^0.15.0",
     "numeral": "^2.0.6",
     "pdfmake": "^0.1.68",
