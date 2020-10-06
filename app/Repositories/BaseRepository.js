@@ -1,7 +1,6 @@
 'use strict';
 
 const _ = require('lodash');
-const Event = use('Event');
 const DataBase = use('Database');
 const { sanitizor } = use('Validator');
 
@@ -12,17 +11,15 @@ class BaseRepository {
     this.noRecordFound = `${this.model.name} - Resource not found`;
     this.columnsToSearch = columnsToSearch;
     this.columnsDateBetween = columnsDateBetween;
+    this._ = _;
+    this.hasUserId = false;
   }
 
-  async index({ request }) {
+  async index({ request }, ignoreParams = []) {
     const { q } = request.only('q');
     const { nullFields } = request.only('nullFields');
-    const { totals } = request.only('totals');
     const { status } = request.only('status');
-    const { excel } = request.only('excel');
-    const { pdf } = request.only('pdf');
     const hasDateBetween = await this.existDateBetween(request.all());
-
     const paramsToQuery = request.except([
       'page',
       'perPage',
@@ -36,11 +33,14 @@ class BaseRepository {
       'total',
       'nullFields',
       'status',
+      'all',
+      'roles',
       ...hasDateBetween,
+      ...ignoreParams,
     ]);
 
-    const paramsToPaginate = request.only(['page', 'perPage']);
-    const { order = 'desc', sort } = request.all();
+    const { order = 'asc', sort } = request.all();
+
     const query = this.model.query();
 
     if (q) {
@@ -65,38 +65,38 @@ class BaseRepository {
       query.orderBy(sort, order);
     }
 
-    if (excel || pdf || totals) {
-      return await query.fetch();
-    }
-
-    const result = await query.paginate(
-      paramsToPaginate.page,
-      paramsToPaginate.perPage,
-    );
-
-    return result;
+    return { query };
   }
 
-  async store({ request, response }) {
-    const input = request.all();
+  async store({ request, response, user_id }) {
+    const input = { ...request.all() };
     const modelObj = new this.model();
-
     _.forEach(input, (e, i) => {
       modelObj[i] = e;
     });
 
-    await modelObj.save();
+    if (this.hasUserId) {
+      modelObj.user_id = user_id;
+    }
 
-    Event.fire(`new::${this.model.name}`, modelObj);
+    await modelObj.save();
 
     return response.status(201).json({
       msg: `${this.model.name} created successfully`,
-      data: modelObj,
+      data: {
+        ...modelObj.toJSON(),
+        created_at: new Date(modelObj.created_at),
+        update_at: new Date(modelObj.created_at),
+      },
     });
   }
 
   async show(params, response) {
-    const modelObj = await this.model.query().where('id', params.id).first();
+    const modelObj = await this.model
+      .query()
+      .where('id', params.id)
+      .where('status', true)
+      .first();
 
     if (!modelObj) {
       return response.status(404).json({ msg: this.noRecordFound });
@@ -119,22 +119,27 @@ class BaseRepository {
 
     await modelObj.save();
 
-    Event.fire(`update::${this.model.name}`, modelObj);
     return response.status(200).json({
       msg: `${this.model.name} has been updated`,
-      data: modelObj,
+      data: {
+        ...modelObj.toJSON(),
+        created_at: new Date(modelObj.created_at),
+        update_at: new Date(modelObj.created_at),
+      },
     });
   }
 
   async destroy({ params, response }) {
     const modelObj = await this.model.query().where({ id: params.id }).first();
+
     if (!modelObj) {
       return response.status(404).json({ msg: this.noRecordFound });
     }
     modelObj.status = false;
     modelObj.deleted_at = new Date();
+
     await modelObj.save();
-    Event.fire(`destroy::${this.model.name}`, modelObj);
+
     return response.noContent();
   }
 
@@ -248,6 +253,13 @@ class BaseRepository {
 
     fields.forEach((field) => query.whereNull(field));
   }
+
+  /**
+   * Método para customização da query base, que deve ser escrito no repository em que deseja ter o getAll customizado
+   * @param {ctxAdonis}
+   * @param {query}
+   */
+  customIndex() {}
 }
 
 module.exports = BaseRepository;

@@ -1,46 +1,78 @@
 'user-strict';
 
-const Redis = use('Redis');
-const Env = use('Env');
-const USE_CACHE_REDIS = Env.get('USE_CACHE_REDIS', false);
-
 class BaseController {
   constructor(repository, transformer = 'BaseTransformer') {
     this.repository = repository;
     this.transformer = transformer;
-    this.useCache = USE_CACHE_REDIS == 1;
+    this.ignoreParamsToQuery = [];
   }
 
-  async index({ transform, request, response, view, auth }) {
+  async index({ transform, request }) {
     const { excel } = request.only('excel');
     const { pdf } = request.only('pdf');
     const { totals } = request.only('totals');
+    const { all } = request.only('all');
+    const { page, perPage } = request.only(['page', 'perPage']);
 
-    if (this.useCache) {
-      const cachedItens = await Redis.get(
-        `${this.repository.model.name}_index`,
-      );
+    const { query } = await this.repository.index(
+      ...arguments,
+      this.ignoreParamsToQuery,
+    );
 
-      if (cachedItens) {
-        return JSON.parse(cachedItens);
-      }
-    }
-
-    const itens = await this.repository.index(...arguments);
-
-    if (this.useCache) {
-      await Redis.set(
-        `${this.repository.model.name}_index`,
-        JSON.stringify(itens),
-      );
-    }
-
-    let transformedItens = null;
     if (excel || pdf || totals) {
-      transformedItens = await transform.collection(
-        itens,
-        this._getTransform('collection'),
-      );
+      return await this.generateReport(...arguments, query);
+    }
+
+    await this.repository.customIndex(...arguments, query);
+
+    if (all) {
+      return await this.getAllItens(...arguments, query);
+    }
+
+    const itens = await query.paginate(page, perPage);
+
+    return transform
+      .withContext(...arguments)
+      .paginate(itens, this._getTransform('collection'));
+  }
+
+  async store(ctx) {
+    return this.repository.store(ctx);
+  }
+
+  async show({ params, transform, response }) {
+    const itens = await this.repository.show(params, response);
+
+    return transform.item(itens, this._getTransform('item'));
+  }
+
+  async update(ctx) {
+    return this.repository.update(ctx);
+  }
+
+  async destroy(ctx) {
+    return this.repository.destroy(ctx);
+  }
+
+  _getTransform(type) {
+    return typeof this.transformer === 'string'
+      ? this.transformer
+      : this.transformer[type];
+  }
+
+  async generateReport({ request, transform, view, auth, response }, query) {
+    const { excel } = request.only('excel');
+    const { pdf } = request.only('pdf');
+    const { totals } = request.only('totals');
+    const itens = await query.fetch();
+
+    const transformedItens = await transform.collection(
+      itens,
+      this._getTransform('collection'),
+    );
+
+    if (totals) {
+      return await this.repository.getTotals(transformedItens);
     }
 
     if (excel) {
@@ -62,52 +94,12 @@ class BaseController {
 
       return fileName;
     }
-
-    if (totals) {
-      return await this.repository.getTotals(transformedItens);
-    }
-
-    return transform.paginate(itens, this._getTransform('collection'));
   }
 
-  async store(ctx) {
-    return this.repository.store(ctx);
-  }
+  async getAllItens({ transform }, query) {
+    const itens = await query.fetch();
 
-  async show({ params, transform, response }) {
-    if (this.useCache) {
-      const cachedItens = await Redis.get(
-        `${this.repository.model.name}_show_${params.id}`,
-      );
-
-      if (cachedItens) {
-        return JSON.parse(cachedItens);
-      }
-    }
-    const itens = await this.repository.show(params, response);
-
-    if (this.useCache) {
-      await Redis.set(
-        `${this.repository.model.name}_show_${params.id}`,
-        JSON.stringify(itens),
-      );
-    }
-
-    return transform.item(itens, this._getTransform('item'));
-  }
-
-  async update(ctx) {
-    return this.repository.update(ctx);
-  }
-
-  async destroy(ctx) {
-    return this.repository.destroy(ctx);
-  }
-
-  _getTransform(type) {
-    return typeof this.transformer === 'string'
-      ? this.transformer
-      : this.transformer[type];
+    return transform.collection(itens, this._getTransform('collection'));
   }
 }
 

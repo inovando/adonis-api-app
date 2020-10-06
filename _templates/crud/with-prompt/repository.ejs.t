@@ -1,6 +1,7 @@
 ---
 to: app/Repositories/<%= h.inflection.camelize(resource) %>Repository.js
 unless_exists: true
+sh: yarn eslint --fix app/Repositories/
 ---
 
 'use strict';

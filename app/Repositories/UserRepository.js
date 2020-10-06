@@ -11,6 +11,7 @@ class UserRepository extends BaseRepository {
   }
 
   async store({ request, response, auth }) {
+    console.log(request.all());
     const { email, profile_id, password } = request.all();
     const emailLower = email.toLowerCase();
 
@@ -24,8 +25,10 @@ class UserRepository extends BaseRepository {
     }
 
     const createData = request.except(['profile_id']);
-    await this.model.create(createData);
-    const newUser = await this.model.findBy('email', emailLower);
+    const newUser = await this.model.create(createData);
+    // const newUser = await this.model.findBy('email', emailLower);
+
+    console.log(newUser);
     newUser.profiles().attach([profile_id]);
 
     const accessToken = await auth.attempt(email.toLowerCase(), password);

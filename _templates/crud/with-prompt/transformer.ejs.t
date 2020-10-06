@@ -7,20 +7,23 @@ sh: adonis migration:refresh  --seed
 const BumblebeeTransformer = use('Bumblebee/Transformer');
 
 class <%= h.capitalize(resource) %>Transformer extends BumblebeeTransformer {
-  transformCollection(model) {
+
+  <%= resource %>(model) {
     return {
       id: model.id,
       status: model.status,
       created_at: model.created_at,
+        <% Object.keys(tiposDados).forEach(function(key) { %>
+         <%=key%> : model.<%=key%>,
+        <% }); %>
     };
+  }
+  transformCollection(model) {
+    return this.<%= resource %>(model);
   }
 
   transformItem(model) {
-    return {
-      id: model.id,
-      status: model.status,
-      created_at: model.created_at,
-    };
+    return this.<%= resource %>(model);
   }
 }
 

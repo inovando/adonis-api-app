@@ -1,6 +1,8 @@
 ---
 to: app/Controllers/Http/<%= h.inflection.camelize(resource) %>Controller.js
 unless_exists: true
+eof_last: true
+sh: yarn eslint --fix app/Controllers/
 ---
 'use strict';
 const <%= h.capitalize(resource) %>Repository = use('App/Repositories/<%= h.capitalize(resource) %>Repository');
