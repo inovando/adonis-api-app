@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0e06ed6b-f0bb-47ba-986e-a19f0c25eab9",
+		"_postman_id": "468ead38-0e20-4eb2-8a94-695b643ea93b",
 		"name": "Template Adonis",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -10,12 +10,30 @@
 			"item": [
 				{
 					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cbfacc03-e2cf-4570-a424-98ed50d8046f",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"\r",
+									"    const { access_token } = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set(\"access_token\", access_token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"2Tssesstea 123\",\r\n    \"email\" :\"emaaissaswl@email.com\",\r\n    \"password\" : \"senha123\",\r\n    \"profile_id\" : 2\r\n}",
+							"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\" :\"{{$randomEmail}}\",\r\n    \"password\" : \"senha123\",\r\n    \"profile_id\" : 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -41,14 +59,17 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "46ca450e-4730-4fc1-bf08-9084b1d8713c",
+								"id": "6ab61c8b-ed9c-4f5f-889b-99f7d742ee0c",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    const access_token = pm.response.json().access_token.token;\r",
+									"    \r",
+									"    pm.environment.set(\"access_token\", access_token);\r",
 									"});\r",
 									"\r",
-									"var access_token = pm.response.json().access_token.token;\r",
-									"pm.environment.set(\"access_token\", access_token);\r",
+									"\r",
 									"\r",
 									"\r",
 									""
@@ -62,7 +83,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\" :\"emaaissaswl@email.com\",\r\n    \"password\" : \"senha123\"\r\n}",
+							"raw": "{\r\n    \"email\" :\"admin@admin.com\",\r\n    \"password\" : \"admin123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -84,6 +105,20 @@
 				},
 				{
 					"name": "Me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a74a2edf-a682-4b79-90ea-a2b93b9f66f6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -119,6 +154,24 @@
 			"item": [
 				{
 					"name": "Upload File",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dcb6fa0a-0f0e-42ee-890c-f5da5e8b973e",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"\r",
+									"    const { data } = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set(\"file_id\", data.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -137,8 +190,9 @@
 							"formdata": [
 								{
 									"key": "file",
+									"description": "Tem que selecionar o arquivo para fazer o upload",
 									"type": "file",
-									"src": "/C:/Users/tiago/Pictures/Feedback/{5E7C2FD5-0CAE-4C52-985F-0548C995E5A3}/Capture001.png"
+									"src": []
 								}
 							]
 						},
@@ -156,6 +210,20 @@
 				},
 				{
 					"name": "Get file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "82613998-f5e4-4574-bf6a-f4ae3c9282ba",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -170,13 +238,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/file/88af4072-b7ca-4119-a565-22ab5deaf28d",
+							"raw": "{{BASE_URL}}/file/{{file_id}}",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"file",
-								"88af4072-b7ca-4119-a565-22ab5deaf28d"
+								"{{file_id}}"
 							]
 						}
 					},
@@ -190,6 +258,20 @@
 			"item": [
 				{
 					"name": "All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e9e0209e-5b9a-406e-91db-ed95e8dd4996",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
