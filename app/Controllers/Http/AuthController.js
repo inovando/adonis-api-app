@@ -45,6 +45,7 @@ class AuthController {
       return response.status(403).json({ msg: 'E-mail não localizado.' });
     }
     const mailSend = await UserRepository.resetPassword(user, view);
+
     return response.status(200).json({ user, mailSend });
   }
 
@@ -58,8 +59,10 @@ class AuthController {
     }
     user.password = password;
     user.reset_token = '';
+
     await user.save();
     await user.reload();
+
     return response.status(200).json({ user: user.email });
   }
 }

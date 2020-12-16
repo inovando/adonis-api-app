@@ -22,6 +22,8 @@ Route.group(() => {
   Route.post('/register', 'AuthController.register').validator('Register');
   Route.post('/login', 'AuthController.login');
   Route.get('/me', 'AuthController.session').middleware(['auth']);
+  Route.post('/reset-password', 'AuthController.resetPassword');
+  Route.post('/update-password', 'AuthController.updatePassword');
 }).prefix('/auth');
 
 Route.resource('file', 'FileController').middleware(['auth']).apiOnly();
