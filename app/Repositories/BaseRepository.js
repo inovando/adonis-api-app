@@ -17,7 +17,7 @@ class BaseRepository {
 
   async index({ request }, ignoreParams = []) {
     const { q } = request.only('q');
-    const { nullFields } = request.only('nullFields');
+    const { isNull } = request.only('isNull');
     const { status } = request.only('status');
     const hasDateBetween = await this.existDateBetween(request.all());
     const paramsToQuery = request.except([
@@ -31,7 +31,7 @@ class BaseRepository {
       'excel',
       'pdf',
       'total',
-      'nullFields',
+      'isNull',
       'status',
       'all',
       'roles',
@@ -59,7 +59,7 @@ class BaseRepository {
 
     query.where('status', status || true);
 
-    this.addWhereNullFieldsQuery(query, nullFields);
+    this.addWhereNullFieldsQuery(query, isNull);
 
     if (sort) {
       query.orderBy(sort, order);
