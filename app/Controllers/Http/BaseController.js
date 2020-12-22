@@ -40,10 +40,10 @@ class BaseController {
     return this.repository.store(ctx);
   }
 
-  async show({ params, transform, response }) {
-    const itens = await this.repository.show(params, response);
+  async show(ctx) {
+    const itens = await this.repository.show(ctx);
 
-    return transform.item(itens, this._getTransform('item'));
+    return ctx.transform.item(itens, this._getTransform('item'));
   }
 
   async update(ctx) {

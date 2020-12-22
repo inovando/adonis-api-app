@@ -18,7 +18,6 @@ class BaseRepository {
   async index({ request }, ignoreParams = []) {
     const { q } = request.only('q');
     const { isNull } = request.only('isNull');
-    const { status } = request.only('status');
     const hasDateBetween = await this.existDateBetween(request.all());
     const paramsToQuery = request.except([
       'page',
@@ -57,8 +56,6 @@ class BaseRepository {
       }
     });
 
-    query.where('status', status || true);
-
     this.addWhereNullFieldsQuery(query, isNull);
 
     if (sort) {
@@ -86,12 +83,12 @@ class BaseRepository {
       data: {
         ...modelObj.toJSON(),
         created_at: new Date(modelObj.created_at),
-        update_at: new Date(modelObj.created_at),
+        update_at: new Date(modelObj.update_at),
       },
     });
   }
 
-  async show(params, response) {
+  async show({ params, response }) {
     const modelObj = await this.model
       .query()
       .where('id', params.id)
@@ -104,13 +101,18 @@ class BaseRepository {
     return modelObj;
   }
 
-  async update({ params, request, response }) {
+  async update({ params, request, response, auth }) {
     const input = request.all();
 
     const modelObj = await this.model.query().where({ id: params.id }).first();
 
     if (!modelObj) {
       return response.status(404).json({ msg: this.noRecordFound });
+    }
+
+    const canEditModel = await this.canEdit(auth, modelObj);
+    if (!canEditModel) {
+      return response.status(403).json({ msg: 'Status não permite edição' });
     }
 
     _.forEach(input, (e, i) => {
@@ -172,14 +174,15 @@ class BaseRepository {
       this.columnsToSearch = await this._getColumns();
     }
 
-    this.columnsToSearch.forEach((column, index) => {
-      const isFirst = index === 0;
+    query.whereExists((builder) => {
+      this.columnsToSearch.forEach((column) => {
+        builder.orWhereRaw(
+          `unaccent(${column.name}) ILIKE unaccent(?)`,
+          `%${q}%`,
+        );
 
-      if (isFirst) {
-        query.whereRaw(`unaccent(${column.name}) ILIKE unaccent(?)`, `%${q}%`);
-      }
-      query.orWhereRaw(`unaccent(${column.name}) ILIKE unaccent(?)`, `%${q}%`);
-      return query;
+        return query;
+      });
     });
   }
 
@@ -259,7 +262,13 @@ class BaseRepository {
    * @param {ctxAdonis}
    * @param {query}
    */
-  customIndex() {}
+  async customIndex(ctx, query) {
+    query.where('status', true);
+  }
+
+  async canEdit() {
+    return true;
+  }
 }
 
 module.exports = BaseRepository;
