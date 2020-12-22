@@ -1,4 +1,5 @@
 const { hooks } = require('@adonisjs/ignitor');
+const { validateBr } = require('js-brasil');
 
 hooks.after.providersBooted(() => {
   const Validator = use('Validator');
@@ -51,7 +52,32 @@ hooks.after.providersBooted(() => {
     }
   };
 
+  const documento = async (data, field, message, args, get) => {
+    const [documento] = args;
+    const value = get(data, field);
+    if (!value) return;
+
+    if (!validateBr[documento](value)) {
+      throw message;
+    }
+  };
+
+  const validateUuid = async (data, field, message, args, get) => {
+    const value = get(data, field);
+
+    if (!value) return null;
+
+    const regex = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[1-5][0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$/i;
+    const isUuid = regex.exec(value);
+
+    if (isUuid) return null;
+
+    throw message;
+  };
+
+  Validator.extend('documento', documento);
   Validator.extend('exists', existsFn);
   Validator.extend('uniqueField', uniqueField);
   Validator.extend('validateDuplicidade', validateDuplicidade);
+  Validator.extend('uuid', validateUuid);
 });
