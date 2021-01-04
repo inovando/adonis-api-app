@@ -88,17 +88,12 @@ class BaseRepository {
     });
   }
 
-  async show({ params, response }) {
-    const modelObj = await this.model
-      .query()
-      .where('id', params.id)
-      .where('status', true)
-      .first();
+  async show({ params }) {
+    const query = this.model.query();
 
-    if (!modelObj) {
-      return response.status(404).json({ msg: this.noRecordFound });
-    }
-    return modelObj;
+    query.where('id', params.id);
+
+    return { query };
   }
 
   async update({ params, request, response, auth }) {
@@ -263,6 +258,10 @@ class BaseRepository {
    * @param {query}
    */
   async customIndex(ctx, query) {
+    query.where('status', true);
+  }
+
+  async customShow(ctx, query) {
     query.where('status', true);
   }
 

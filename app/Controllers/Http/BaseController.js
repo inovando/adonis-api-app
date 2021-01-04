@@ -40,10 +40,18 @@ class BaseController {
     return this.repository.store(ctx);
   }
 
-  async show(ctx) {
-    const itens = await this.repository.show(ctx);
+  async show({ response, transform }) {
+    const { query } = await this.repository.show(...arguments);
 
-    return ctx.transform.item(itens, this._getTransform('item'));
+    await this.repository.customShow(...arguments, query);
+
+    const item = await query.first();
+
+    if (!item) {
+      return response.status(404).json({ msg: 'Resource not found' });
+    }
+
+    return transform.item(item, this._getTransform('item'));
   }
 
   async update(ctx) {
