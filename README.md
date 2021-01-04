@@ -10,14 +10,14 @@
 
 1. Setup a [PostgreSQL](#postgresql)
 
-2. Initialize your project with this command:
+2. Modify `.env` fulfilling variables as needed
+
+3. Initialize your project with this command:
 
 ```bash
 adonis new yardstick --blueprint=inovando/adonis-api-app
 adonis migration:refresh --seed
 ```
-
-3. Modify `.env` fulfilling variables as needed
 
 4. Run the following command:
 
