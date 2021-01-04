@@ -24,6 +24,7 @@ const providers = [
   'adonis-spreadsheet/providers/SpreadSheetProvider',
   '@rocketseat/adonis-timezone/providers/TimezoneProvider',
   '@adonisjs/mail/providers/MailProvider',
+  '@adonisjs/antl/providers/AntlProvider',
 ];
 
 /*
