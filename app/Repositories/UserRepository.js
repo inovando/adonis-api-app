@@ -5,7 +5,7 @@ const BaseRepository = use('./BaseRepository');
 const { ioc } = require('@adonisjs/fold');
 const Env = use('Env');
 const shortid = require('shortid');
-const { sendTemplateMail } = require('../Services/SendGrid/SendGrid');
+const { sendEmail } = require('../Services/Mail');
 
 class UserRepository extends BaseRepository {
   constructor(model) {
@@ -43,7 +43,7 @@ class UserRepository extends BaseRepository {
     });
   }
 
-  async resetPassword(user, view) {
+  async resetPassword(user) {
     const reset_token = shortid.characters().toLowerCase();
     const ADMIN_URL = Env.get('ADMIN_URL');
     const app_name = Env.get('APP_NAME');
@@ -57,13 +57,11 @@ class UserRepository extends BaseRepository {
 
     await this._saveToken(user, reset_token);
 
-    const html = view.render('reset-password', dataEmail);
-
-    return await sendTemplateMail(
+    return await sendEmail(
       user.email,
       'Recuperação de Senha',
-      'Recuperação de Senha',
-      html.toString(),
+      dataEmail,
+      'reset-password',
     );
   }
 

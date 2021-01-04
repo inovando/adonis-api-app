@@ -37,16 +37,26 @@ class AuthController {
     return transform.item(user, 'UserTransformer');
   }
 
-  async resetPassword({ request, response, view }) {
+  async resetPassword({ request, response }) {
     const { email } = request.all();
     const emailLower = email.toLowerCase();
     const user = await User.findBy('email', emailLower);
+
     if (!user) {
       return response.status(403).json({ msg: 'E-mail não localizado.' });
     }
-    const mailSend = await UserRepository.resetPassword(user, view);
+    const mailSend = await UserRepository.resetPassword(user);
 
     return response.status(200).json({ user, mailSend });
+  }
+
+  async getTokenByEmail({ request }) {
+    const { email } = request.all();
+    const emailLower = email.toLowerCase();
+
+    const user = await User.findBy('email', emailLower);
+
+    return { reset_token: user.reset_token };
   }
 
   async updatePassword({ request, response }) {
@@ -57,13 +67,16 @@ class AuthController {
     if (!user) {
       return response.status(403).json({ msg: 'Token inválido ou expirado.' });
     }
+
     user.password = password;
     user.reset_token = '';
 
     await user.save();
     await user.reload();
 
-    return response.status(200).json({ user: user.email });
+    return response
+      .status(200)
+      .json({ user: user.email, msg: 'Senha alterada com sucesso!' });
   }
 }
 

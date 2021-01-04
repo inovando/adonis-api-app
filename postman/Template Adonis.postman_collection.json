@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "468ead38-0e20-4eb2-8a94-695b643ea93b",
+		"_postman_id": "3fe318d2-1c35-481c-84e0-1801f4c5963a",
 		"name": "Template Adonis",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cbfacc03-e2cf-4570-a424-98ed50d8046f",
 								"exec": [
 									"pm.test(\"Status code is 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
@@ -59,7 +58,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6ab61c8b-ed9c-4f5f-889b-99f7d742ee0c",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -67,12 +65,7 @@
 									"    const access_token = pm.response.json().access_token.token;\r",
 									"    \r",
 									"    pm.environment.set(\"access_token\", access_token);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									""
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -109,7 +102,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a74a2edf-a682-4b79-90ea-a2b93b9f66f6",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -144,10 +136,141 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" :\"admin@admin.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/reset-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reset Password Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"",
+									"    const { reset_token } = pm.response.json();",
+									"",
+									"     pm.environment.set(\"reset_token_password\", reset_token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/get-token?email=admin@admin.com",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"get-token"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "admin@admin.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\" :\"{{reset_token_password}}\",\n    \"password\": \"novaSenha\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/update-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"update-password"
+							]
+						},
+						"description": "Alteração de senha com token para o fluxo de recuperação de senha"
+					},
+					"response": []
 				}
 			],
-			"description": "Autenticação e etc...",
-			"protocolProfileBehavior": {}
+			"description": "Autenticação e etc..."
 		},
 		{
 			"name": "Files",
@@ -158,7 +281,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dcb6fa0a-0f0e-42ee-890c-f5da5e8b973e",
 								"exec": [
 									"pm.test(\"Status code is 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
@@ -214,7 +336,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "82613998-f5e4-4574-bf6a-f4ae3c9282ba",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -250,8 +371,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Users",
@@ -262,7 +382,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e9e0209e-5b9a-406e-91db-ed95e8dd4996",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -303,9 +422,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

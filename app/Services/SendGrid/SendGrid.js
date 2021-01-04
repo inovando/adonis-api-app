@@ -3,7 +3,7 @@ const Env = use('Env');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const FROM_EMAIL = Env.getOrFail('FROM_MAIl');
+const FROM_EMAIL = Env.getOrFail('FROM_MAIL');
 
 const sendTestEmail = async () => {
   const msg = {

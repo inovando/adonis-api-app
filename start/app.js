@@ -23,6 +23,7 @@ const providers = [
   'adonis-sentry/providers/Sentry',
   'adonis-spreadsheet/providers/SpreadSheetProvider',
   '@rocketseat/adonis-timezone/providers/TimezoneProvider',
+  '@adonisjs/mail/providers/MailProvider',
 ];
 
 /*
