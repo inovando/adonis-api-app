@@ -8,7 +8,7 @@ class OnlyProfile {
     const canAccess = await this.validateAcess(auth, properties);
 
     if (!canAccess) {
-      response.status(401).json('Unauthorized');
+      return response.status(401).json('Unauthorized');
     }
     await next();
   }
@@ -18,7 +18,7 @@ class OnlyProfile {
 
     const collection = userProfile.toJSON();
     return collection.find((p) => {
-      return p.name == profilesAllowd;
+      return profilesAllowd.includes(p.name);
     });
   }
 }
