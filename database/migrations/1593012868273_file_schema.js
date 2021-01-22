@@ -8,8 +8,7 @@ class FileSchema extends Schema {
     this.create('files', (table) => {
       table.uuid('id').primary().defaultTo(this.db.raw('uuid_generate_v4()'));
       table.boolean('status').defaultTo(1);
-      table.timestamps();
-      table.datetime('deleted_at');
+
       table.string('path').notNullable();
       table.string('name');
 
@@ -20,6 +19,9 @@ class FileSchema extends Schema {
         .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
+
+      table.timestamps();
+      table.datetime('deleted_at');
     });
   }
 

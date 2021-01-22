@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const DataBase = use('Database');
 const { sanitizor } = use('Validator');
+const isProfile = require('../Util/isProfile');
 
 class BaseRepository {
   constructor(model, columnsToSearch = [], columnsDateBetween = []) {
@@ -145,8 +146,15 @@ class BaseRepository {
 
     if (!profiles.rows.length) return false;
 
-    const hasAdminProfile = profiles.rows.some((profile) => profile.id === 1);
-    return hasAdminProfile;
+    return isProfile(profiles.rows, 'ADMIN');
+  }
+
+  async isProfile(auth, profileToCheck) {
+    if (!auth.user) return false;
+
+    const profiles = await auth.user.profiles().fetch();
+
+    return isProfile(profiles.rows, profileToCheck);
   }
 
   async _getColumns(type = ['character varying']) {

@@ -5,7 +5,6 @@ const Schema = use('Schema');
 
 class DbSetupSchema extends Schema {
   async up() {
-
     await this.db.raw(
       'CREATE EXTENSION IF NOT EXISTS "uuid-ossp" schema public',
     );
