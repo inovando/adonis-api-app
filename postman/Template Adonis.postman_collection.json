@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3fe318d2-1c35-481c-84e0-1801f4c5963a",
+		"_postman_id": "ee05e529-2489-4a0b-9d7f-454023afa75f",
 		"name": "Template Adonis",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -417,6 +417,148 @@
 									"key": "include",
 									"value": "profiles"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"\r",
+									"    const { access_token, newUser } = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set(\"access_token\", access_token);\r",
+									"    pm.environment.set(\"user_id\", newUser.id);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\" :\"{{$randomEmail}}\",\r\n    \"password\" : \"senha123\",\r\n    \"profile_id\" : 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/user",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\" :\"{{$randomEmail}}\",\r\n    \"password\" : \"novaSenha\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/user/{{user_id}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/user/{{user_id}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"{{user_id}}"
 							]
 						}
 					},
